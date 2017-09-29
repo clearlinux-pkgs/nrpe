@@ -1,4 +1,3 @@
 # This file contains the output files that need %exclude. Full path
 # names, one per line.
 /usr/bin/nrpe-uninstall
-/usr/libexec/check_nrpe

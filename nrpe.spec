@@ -4,7 +4,7 @@
 #
 Name     : nrpe
 Version  : 3.2.1
-Release  : 1
+Release  : 2
 URL      : https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-3.2.1/nrpe-3.2.1.tar.gz
 Source0  : https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-3.2.1/nrpe-3.2.1.tar.gz
 Summary  : No detailed summary available
@@ -45,12 +45,12 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1506638795
+export SOURCE_DATE_EPOCH=1506702716
 %configure --disable-static --with-init-type=systemd
 make V=1  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1506638795
+export SOURCE_DATE_EPOCH=1506702716
 rm -rf %{buildroot}
 %make_install
 
@@ -60,8 +60,8 @@ rm -rf %{buildroot}
 %files bin
 %defattr(-,root,root,-)
 %exclude /usr/bin/nrpe-uninstall
-%exclude /usr/libexec/check_nrpe
 /usr/bin/nrpe
+/usr/libexec/check_nrpe
 
 %files config
 %defattr(-,root,root,-)
