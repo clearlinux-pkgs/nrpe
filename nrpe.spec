@@ -4,7 +4,7 @@
 #
 Name     : nrpe
 Version  : 3.2.1
-Release  : 2
+Release  : 3
 URL      : https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-3.2.1/nrpe-3.2.1.tar.gz
 Source0  : https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-3.2.1/nrpe-3.2.1.tar.gz
 Summary  : No detailed summary available
@@ -12,9 +12,13 @@ Group    : Development/Tools
 License  : GPL-2.0
 Requires: nrpe-bin
 Requires: nrpe-config
-BuildRequires : openssl-dev
+Requires: nrpe-data
+Requires: nrpe-doc
+BuildRequires : pkgconfig(openssl)
 BuildRequires : procps-ng
 Patch1: 0001-Fixups-for-autoconf-automake-files.patch
+Patch2: 0002-Fixup-recursive-make-recipes-and-create-dirs.patch
+Patch3: 0003-Create-default-config-for-stateless.patch
 
 %description
 ![Nagios!](https://www.nagios.com/wp-content/uploads/2015/05/Nagios-Black-500x124.png)
@@ -22,6 +26,7 @@ Patch1: 0001-Fixups-for-autoconf-automake-files.patch
 %package bin
 Summary: bin components for the nrpe package.
 Group: Binaries
+Requires: nrpe-data
 Requires: nrpe-config
 
 %description bin
@@ -36,23 +41,41 @@ Group: Default
 config components for the nrpe package.
 
 
+%package data
+Summary: data components for the nrpe package.
+Group: Data
+
+%description data
+data components for the nrpe package.
+
+
+%package doc
+Summary: doc components for the nrpe package.
+Group: Documentation
+
+%description doc
+doc components for the nrpe package.
+
+
 %prep
 %setup -q -n nrpe-3.2.1
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1506702716
-%configure --disable-static --with-init-type=systemd
+export SOURCE_DATE_EPOCH=1512600156
+%configure --disable-static --with-init-type=systemd --sysconfdir=/usr/share/defaults/nrpe
 make V=1  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1506702716
+export SOURCE_DATE_EPOCH=1512600156
 rm -rf %{buildroot}
-%make_install
+%make_install install-config install-init
 
 %files
 %defattr(-,root,root,-)
@@ -65,4 +88,13 @@ rm -rf %{buildroot}
 
 %files config
 %defattr(-,root,root,-)
+/usr/lib/systemd/system/nrpe.service
 /usr/lib/tmpfiles.d/nrpe.conf
+
+%files data
+%defattr(-,root,root,-)
+/usr/share/defaults/nrpe/nrpe.cfg
+
+%files doc
+%defattr(-,root,root,-)
+%doc /usr/share/doc/nrpe/*

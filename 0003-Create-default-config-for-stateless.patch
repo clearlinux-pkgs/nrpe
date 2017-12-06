@@ -1,0 +1,76 @@
+From 41b28f101ea76dea59c3d9cc2414e7a7e5283d80 Mon Sep 17 00:00:00 2001
+From: "Brett T. Warden" <brett.t.warden@intel.com>
+Date: Wed, 6 Dec 2017 13:11:17 -0800
+Subject: [PATCH] Create default config for stateless
+
+Store the generated default config in docdir and generate a one-line
+config in /usr/share/defaults to include an optional overlay dir in
+/etc.
+
+Signed-off-by: Brett T. Warden <brett.t.warden@intel.com>
+---
+ .gitignore  |  1 +
+ Makefile.in | 13 +++++++++++--
+ configure   |  2 +-
+ 3 files changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/.gitignore b/.gitignore
+index ae5bfca..21339e3 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -13,6 +13,7 @@ nrpe.cbp
+ nrpe.layout
+ package/solaris/Makefile
+ sample-config/nrpe.cfg
++overlay-config/
+ src/Makefile
+ src/check_nrpe
+ src/nrpe
+diff --git a/Makefile.in b/Makefile.in
+index 34726e1..bea4c7b 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -22,6 +22,9 @@ EGREP=@EGREP@
+ prefix=$(DESTDIR)@prefix@
+ exec_prefix=$(DESTDIR)@exec_prefix@
+ CFGDIR=$(DESTDIR)@pkgsysconfdir@
++CFGOVERLAYDIR=/etc/nrpe/nrpe.d
++CFGOVERLAYFILE=overlay-config/nrpe.cfg
++DOCDIR=$(DESTDIR)@docdir@
+ BINDIR=$(DESTDIR)@bindir@
+ SBINDIR=$(DESTDIR)@sbindir@
+ LIBEXECDIR=$(DESTDIR)@libexecdir@
+@@ -153,9 +156,15 @@ install-inetd:
+ 	@$(EGREP) -q "^nrpe[\t ]+@nrpe_port@/tcp" /etc/services || \
+ 		echo "***** MAKE SURE 'nrpe @nrpe_port@/tcp' IS IN YOUR /etc/services FILE"
+ 
+-install-config:
++install-config: $(CFGOVERLAYFILE)
+ 	$(INSTALL) -m 775 $(NAGIOS_INSTALL_OPTS) -d $(CFGDIR)
+-	$(INSTALL) -m 644 $(NRPE_INSTALL_OPTS) sample-config/nrpe.cfg $(CFGDIR)
++	$(INSTALL) -m 775 $(NAGIOS_INSTALL_OPTS) -d $(DOCDIR)
++	$(INSTALL) -m 644 $(NRPE_INSTALL_OPTS) sample-config/nrpe.cfg $(DOCDIR)
++	$(INSTALL) -m 644 $(NRPE_INSTALL_OPTS) $^ $(CFGDIR)
++
++$(CFGOVERLAYFILE):
++	mkdir -p $(dir $@)
++	echo 'include_dir=$(CFGOVERLAYDIR)' > $@
+ 
+ install-groups-users:
+ 	@macros/add_group_user $(DIST) $(NAGIOS_USER) $(NAGIOS_GROUP)
+diff --git a/configure b/configure
+index d67c01b..5c7a908 100755
+--- a/configure
++++ b/configure
+@@ -820,7 +820,7 @@ sharedstatedir='${prefix}/com'
+ localstatedir='${prefix}/var'
+ includedir='${prefix}/include'
+ oldincludedir='/usr/include'
+-docdir='${datarootdir}/doc/${PACKAGE_TARNAME}'
++docdir='${datarootdir}/doc/'${PACKAGE_TARNAME}
+ infodir='${datarootdir}/info'
+ htmldir='${docdir}'
+ dvidir='${docdir}'
+-- 
+2.15.1
+

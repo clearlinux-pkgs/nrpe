@@ -1,1 +1,1 @@
---with-init-type=systemd
+--with-init-type=systemd --sysconfdir=/usr/share/defaults/nrpe
