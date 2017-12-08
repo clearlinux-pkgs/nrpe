@@ -1,3 +1,4 @@
 0001-Fixups-for-autoconf-automake-files.patch
 0002-Fixup-recursive-make-recipes-and-create-dirs.patch
 0003-Create-default-config-for-stateless.patch
+0004-Do-not-regenerate-dhparams-unless-necessary.patch

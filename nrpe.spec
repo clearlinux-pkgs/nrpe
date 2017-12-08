@@ -4,7 +4,7 @@
 #
 Name     : nrpe
 Version  : 3.2.1
-Release  : 3
+Release  : 4
 URL      : https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-3.2.1/nrpe-3.2.1.tar.gz
 Source0  : https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-3.2.1/nrpe-3.2.1.tar.gz
 Summary  : No detailed summary available
@@ -19,6 +19,7 @@ BuildRequires : procps-ng
 Patch1: 0001-Fixups-for-autoconf-automake-files.patch
 Patch2: 0002-Fixup-recursive-make-recipes-and-create-dirs.patch
 Patch3: 0003-Create-default-config-for-stateless.patch
+Patch4: 0004-Do-not-regenerate-dhparams-unless-necessary.patch
 
 %description
 ![Nagios!](https://www.nagios.com/wp-content/uploads/2015/05/Nagios-Black-500x124.png)
@@ -62,18 +63,19 @@ doc components for the nrpe package.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1512600156
+export SOURCE_DATE_EPOCH=1512765057
 %configure --disable-static --with-init-type=systemd --sysconfdir=/usr/share/defaults/nrpe
 make V=1  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1512600156
+export SOURCE_DATE_EPOCH=1512765057
 rm -rf %{buildroot}
 %make_install install-config install-init
 
