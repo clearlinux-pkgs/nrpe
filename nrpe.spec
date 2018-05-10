@@ -4,7 +4,7 @@
 #
 Name     : nrpe
 Version  : 3.2.1
-Release  : 5
+Release  : 6
 URL      : https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-3.2.1/nrpe-3.2.1.tar.gz
 Source0  : https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-3.2.1/nrpe-3.2.1.tar.gz
 Summary  : No detailed summary available
