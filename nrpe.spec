@@ -4,16 +4,17 @@
 #
 Name     : nrpe
 Version  : 3.2.1
-Release  : 6
+Release  : 7
 URL      : https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-3.2.1/nrpe-3.2.1.tar.gz
 Source0  : https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-3.2.1/nrpe-3.2.1.tar.gz
+Source1  : nrpe.tmpfiles
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-2.0
 Requires: nrpe-bin
 Requires: nrpe-config
 Requires: nrpe-data
-Requires: nrpe-doc
+Requires: nrpe-license
 BuildRequires : pkgconfig(openssl)
 BuildRequires : procps-ng
 Patch1: 0001-Fixups-for-autoconf-automake-files.patch
@@ -27,8 +28,9 @@ Patch4: 0004-Do-not-regenerate-dhparams-unless-necessary.patch
 %package bin
 Summary: bin components for the nrpe package.
 Group: Binaries
-Requires: nrpe-data
-Requires: nrpe-config
+Requires: nrpe-data = %{version}-%{release}
+Requires: nrpe-config = %{version}-%{release}
+Requires: nrpe-license = %{version}-%{release}
 
 %description bin
 bin components for the nrpe package.
@@ -58,6 +60,14 @@ Group: Documentation
 doc components for the nrpe package.
 
 
+%package license
+Summary: license components for the nrpe package.
+Group: Default
+
+%description license
+license components for the nrpe package.
+
+
 %prep
 %setup -q -n nrpe-3.2.1
 %patch1 -p1
@@ -70,14 +80,20 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1512765057
+export SOURCE_DATE_EPOCH=1536954958
 %configure --disable-static --with-init-type=systemd --sysconfdir=/usr/share/defaults/nrpe
-make V=1  %{?_smp_mflags}
+make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1512765057
+export SOURCE_DATE_EPOCH=1536954958
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/doc/nrpe
+cp LICENSE.md %{buildroot}/usr/share/doc/nrpe/LICENSE.md
+cp macros/LICENSE %{buildroot}/usr/share/doc/nrpe/macros_LICENSE
+cp macros/LICENSE.md %{buildroot}/usr/share/doc/nrpe/macros_LICENSE.md
 %make_install install-config install-init
+mkdir -p %{buildroot}/usr/lib/tmpfiles.d
+install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/tmpfiles.d/nrpe.conf
 
 %files
 %defattr(-,root,root,-)
@@ -98,5 +114,11 @@ rm -rf %{buildroot}
 /usr/share/defaults/nrpe/nrpe.cfg
 
 %files doc
-%defattr(-,root,root,-)
+%defattr(0644,root,root,0755)
 %doc /usr/share/doc/nrpe/*
+
+%files license
+%defattr(-,root,root,-)
+/usr/share/doc/nrpe/LICENSE.md
+/usr/share/doc/nrpe/macros_LICENSE
+/usr/share/doc/nrpe/macros_LICENSE.md
