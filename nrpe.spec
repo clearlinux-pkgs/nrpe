@@ -4,17 +4,19 @@
 #
 Name     : nrpe
 Version  : 3.2.1
-Release  : 9
+Release  : 10
 URL      : https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-3.2.1/nrpe-3.2.1.tar.gz
 Source0  : https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-3.2.1/nrpe-3.2.1.tar.gz
 Source1  : nrpe.tmpfiles
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-2.0
-Requires: nrpe-bin
-Requires: nrpe-config
-Requires: nrpe-data
-Requires: nrpe-license
+Requires: nrpe-bin = %{version}-%{release}
+Requires: nrpe-config = %{version}-%{release}
+Requires: nrpe-data = %{version}-%{release}
+Requires: nrpe-libexec = %{version}-%{release}
+Requires: nrpe-license = %{version}-%{release}
+Requires: nrpe-services = %{version}-%{release}
 BuildRequires : pkgconfig(openssl)
 BuildRequires : procps-ng
 Patch1: 0001-Fixups-for-autoconf-automake-files.patch
@@ -29,8 +31,10 @@ Patch4: 0004-Do-not-regenerate-dhparams-unless-necessary.patch
 Summary: bin components for the nrpe package.
 Group: Binaries
 Requires: nrpe-data = %{version}-%{release}
+Requires: nrpe-libexec = %{version}-%{release}
 Requires: nrpe-config = %{version}-%{release}
 Requires: nrpe-license = %{version}-%{release}
+Requires: nrpe-services = %{version}-%{release}
 
 %description bin
 bin components for the nrpe package.
@@ -60,12 +64,30 @@ Group: Documentation
 doc components for the nrpe package.
 
 
+%package libexec
+Summary: libexec components for the nrpe package.
+Group: Default
+Requires: nrpe-config = %{version}-%{release}
+Requires: nrpe-license = %{version}-%{release}
+
+%description libexec
+libexec components for the nrpe package.
+
+
 %package license
 Summary: license components for the nrpe package.
 Group: Default
 
 %description license
 license components for the nrpe package.
+
+
+%package services
+Summary: services components for the nrpe package.
+Group: Systemd services
+
+%description services
+services components for the nrpe package.
 
 
 %prep
@@ -80,19 +102,19 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1536955339
+export SOURCE_DATE_EPOCH=1542746639
 %configure --disable-static --with-init-type=systemd \
 --sysconfdir=/usr/share/defaults/nrpe \
 --with-piddir=/run/nrpe
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1536955339
+export SOURCE_DATE_EPOCH=1542746639
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/share/doc/nrpe
-cp LICENSE.md %{buildroot}/usr/share/doc/nrpe/LICENSE.md
-cp macros/LICENSE %{buildroot}/usr/share/doc/nrpe/macros_LICENSE
-cp macros/LICENSE.md %{buildroot}/usr/share/doc/nrpe/macros_LICENSE.md
+mkdir -p %{buildroot}/usr/share/package-licenses/nrpe
+cp LICENSE.md %{buildroot}/usr/share/package-licenses/nrpe/LICENSE.md
+cp macros/LICENSE %{buildroot}/usr/share/package-licenses/nrpe/macros_LICENSE
+cp macros/LICENSE.md %{buildroot}/usr/share/package-licenses/nrpe/macros_LICENSE.md
 %make_install install-config install-init
 mkdir -p %{buildroot}/usr/lib/tmpfiles.d
 install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/tmpfiles.d/nrpe.conf
@@ -104,11 +126,9 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/tmpfiles.d/nrpe.conf
 %defattr(-,root,root,-)
 %exclude /usr/bin/nrpe-uninstall
 /usr/bin/nrpe
-/usr/libexec/check_nrpe
 
 %files config
 %defattr(-,root,root,-)
-/usr/lib/systemd/system/nrpe.service
 /usr/lib/tmpfiles.d/nrpe.conf
 
 %files data
@@ -119,8 +139,16 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/tmpfiles.d/nrpe.conf
 %defattr(0644,root,root,0755)
 %doc /usr/share/doc/nrpe/*
 
-%files license
+%files libexec
 %defattr(-,root,root,-)
-/usr/share/doc/nrpe/LICENSE.md
-/usr/share/doc/nrpe/macros_LICENSE
-/usr/share/doc/nrpe/macros_LICENSE.md
+/usr/libexec/check_nrpe
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/nrpe/LICENSE.md
+/usr/share/package-licenses/nrpe/macros_LICENSE
+/usr/share/package-licenses/nrpe/macros_LICENSE.md
+
+%files services
+%defattr(-,root,root,-)
+/usr/lib/systemd/system/nrpe.service
