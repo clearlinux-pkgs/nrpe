@@ -1,4 +1,4 @@
-From 78611404d3e1d97fd0055b97884e47b7c519813c Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
 Date: Wed, 6 Dec 2017 14:31:11 -0800
 Subject: [PATCH] Do not regenerate dhparams unless necessary
@@ -29,10 +29,10 @@ index 21339e3..a872651 100644
  paths
  uninstall
 diff --git a/configure b/configure
-index 5c7a908..774de60 100755
+index 3c313f0..1ae42ff 100755
 --- a/configure
 +++ b/configure
-@@ -7721,7 +7721,7 @@ fi
+@@ -7749,7 +7749,7 @@ fi
  			$as_echo "#define USE_SSL_DH 1" >>confdefs.h
  
  			# Generate DH parameters
@@ -40,7 +40,7 @@ index 5c7a908..774de60 100755
 +			if test -f "$sslbin" && ! test -f "include/dh.h"; then
  				echo ""
  				echo "*** Generating DH Parameters for SSL/TLS ***"
- 				# awk to strip off meta data at bottom of dhparam output
+ 				# OpenSSL 3 removes dhparam -C
 diff --git a/include/dh.h b/include/dh.h
 new file mode 100644
 index 0000000..98d1683
@@ -96,6 +96,3 @@ index 0000000..98d1683
 +    }
 +    return dh;
 +}
--- 
-2.19.1
-

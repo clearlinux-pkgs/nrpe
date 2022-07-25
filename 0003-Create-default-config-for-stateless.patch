@@ -1,4 +1,4 @@
-From 41b28f101ea76dea59c3d9cc2414e7a7e5283d80 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
 Date: Wed, 6 Dec 2017 13:11:17 -0800
 Subject: [PATCH] Create default config for stateless
@@ -59,10 +59,10 @@ index 34726e1..bea4c7b 100644
  install-groups-users:
  	@macros/add_group_user $(DIST) $(NAGIOS_USER) $(NAGIOS_GROUP)
 diff --git a/configure b/configure
-index d67c01b..5c7a908 100755
+index 39d9b62..3c313f0 100755
 --- a/configure
 +++ b/configure
-@@ -820,7 +820,7 @@ sharedstatedir='${prefix}/com'
+@@ -821,7 +821,7 @@ sharedstatedir='${prefix}/com'
  localstatedir='${prefix}/var'
  includedir='${prefix}/include'
  oldincludedir='/usr/include'
@@ -71,6 +71,3 @@ index d67c01b..5c7a908 100755
  infodir='${datarootdir}/info'
  htmldir='${docdir}'
  dvidir='${docdir}'
--- 
-2.15.1
-

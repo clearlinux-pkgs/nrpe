@@ -1,4 +1,4 @@
-From 0b6a2449309f0bbdc98a9904dc9006d0767d4b4a Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: William Douglas <william.douglas@intel.com>
 Date: Thu, 28 Sep 2017 21:30:51 +0000
 Subject: [PATCH] Fixups for autoconf/automake files
@@ -39,10 +39,10 @@ index 60b7d13..989d914 100644
  	cd $(SRC_BASE); $(MAKE)
  
 diff --git a/configure b/configure
-index 66462fd..d67c01b 100755
+index 215fec3..39d9b62 100755
 --- a/configure
 +++ b/configure
-@@ -7773,7 +7773,7 @@ else
+@@ -7817,7 +7817,7 @@ else
    nrpe_port=5666
  fi
  
@@ -51,7 +51,7 @@ index 66462fd..d67c01b 100755
  
  cat >>confdefs.h <<_ACEOF
  #define DEFAULT_SERVER_PORT $nrpe_port
-@@ -7796,7 +7796,7 @@ else
+@@ -7840,7 +7840,7 @@ else
    nagios_group=nagios
  fi
  
@@ -60,6 +60,3 @@ index 66462fd..d67c01b 100755
  
  				if test "`uname -s`" = "HP-UX" ; then
  		LDFLAGS="$LDFLAGS -Wl,+allowdups";
--- 
-2.14.1
-

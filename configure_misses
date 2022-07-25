@@ -1,8 +1,9 @@
-Configure miss: tcpd.h usability
-Configure miss: tcpd.h presence
-Configure miss: tcpd.h
-Configure miss: socket.h usability
-Configure miss: socket.h presence
-Configure miss: socket.h
-Configure miss: main in -lwrap
+Configure miss: check_for_tcpd=optional... checking for main in -lwrap
 Configure miss: closesocket
+Configure miss: main in -lnsl
+Configure miss: socket.h
+Configure miss: socket.h presence
+Configure miss: socket.h usability
+Configure miss: tcpd.h
+Configure miss: tcpd.h presence
+Configure miss: tcpd.h usability
