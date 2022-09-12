@@ -4,7 +4,7 @@
 #
 Name     : nrpe
 Version  : 4.1.0
-Release  : 14
+Release  : 15
 URL      : https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-4.1.0/nrpe-4.1.0.tar.gz
 Source0  : https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-4.1.0/nrpe-4.1.0.tar.gz
 Source1  : nrpe.tmpfiles
